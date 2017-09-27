@@ -1,0 +1,7 @@
+{
+  "galaxy.meteor.com": {
+     "env": {
+       "MONGO_URL": "mongodb://lu:880919Lu@ds036079.mlab.com:36079/playground"
+     }
+   }
+}
