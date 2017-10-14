@@ -1,6 +1,7 @@
+import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo'
 
-const Vocabulary = new Mongo.Collection('vocabulary')
+class VocabularyCollection extends Mongo.Collection {}
 
 Meteor.methods({
   'vocabulary.addCount': ({ word }) => {
@@ -32,8 +33,16 @@ Meteor.methods({
   },
 })
 
-Meteor.publish('vocabulary.word', (word) => {
-  return Vocabulary.find({word: word})
-})
+if (Meteor.isServer) {
+  Meteor.publish('vocabulary.all', () => {
+    return Vocabulary.find()
+  })
+  
+  Meteor.publish('vocabulary.word', (word) => {
+    return Vocabulary.find({word: word})
+  })
+}
+ 
+const Vocabulary = new VocabularyCollection('vocabulary')
 
 export default Vocabulary
