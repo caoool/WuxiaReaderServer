@@ -26,5 +26,11 @@ Template.Counters.helpers({
     let count = 0
     data.forEach((item) => { count += item.fav })
     return count
+  },
+  mostLookups() {
+    return Vocabulary.findOne({}, {sort: {count: -1}})
+  },
+  mostFaved() {
+    return Vocabulary.findOne({}, {sort: {fav: -1}})
   }
 })
