@@ -1,7 +1,10 @@
+import fs from 'fs'
 import { Meteor } from 'meteor/meteor'
 import Vocabulary from '../../api/vocabulary'
+import Books from '../../api/books/books'
+import crawl from '../../utils/crawler'
 
-Meteor.startup(() => {
+function vocabGen() {
   if (Vocabulary.find().count() === 0) {
     const data = [
       {
@@ -23,4 +26,26 @@ Meteor.startup(() => {
       Vocabulary.insert(item)
     })
   }
+}
+
+function booksGen() {
+  if (Books.find().count() === 0) {
+    crawl()
+  }
+}
+
+function loadLocalBooks() {
+  const dir = '/epub-repo/'
+  fs.readdirSync(dir).forEach(file => {
+    if (!Books.findOne({name: file})) {
+      const path = dir + file
+      Books.addFile(path)
+    }
+  })
+}
+
+Meteor.startup(() => {
+  // vocabGen()
+  // booksGen()
+  loadLocalBooks()
 })
